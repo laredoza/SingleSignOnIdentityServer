@@ -1,0 +1,24 @@
+FROM microsoft/dotnet:2.2-sdk AS build-env
+WORKDIR /app
+
+#Copy solution file as well as projects
+RUN mkdir -p Data
+COPY ./src/Data/SingleSignOn.Data.csproj ./Data
+
+RUN mkdir -p Infrastructure
+COPY ./src/Infrastructure/SingleSignOn.Infrastructure.csproj ./Infrastructure
+
+RUN mkdir -p IdentityServerAspNetIdentity
+COPY ./src/IdentityServerAspNetIdentity/SingleSignOn.IdentityServerAspNetIdentity.csproj ./IdentityServerAspNetIdentity
+
+# RUN dotnet restore
+# copy and publish app and libraries
+COPY ./src ./
+RUN dotnet publish -c Release -o out ./IdentityServerAspNetIdentity
+
+#Create running docker image
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
+WORKDIR /app
+COPY --from=build-env /app/IdentityServerAspNetIdentity/out .
+EXPOSE 5000/tcp
+ENTRYPOINT ["dotnet", "SingleSignOn.IdentityServerAspNetIdentity.dll"]
