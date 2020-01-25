@@ -171,40 +171,9 @@ namespace SingleSignOn.IdentityServerAspNetIdentity
                         iis.AuthenticationDisplayName = "Windows";
                         iis.AutomaticAuthentication = false;
                     });
-
-            var builder = services.AddIdentityServer(
-                    options =>
-                        {
-                            options.Events.RaiseErrorEvents = true;
-                            options.Events.RaiseInformationEvents = true;
-                            options.Events.RaiseFailureEvents = true;
-                            options.Events.RaiseSuccessEvents = true;
-                        })
-                .AddAspNetIdentity<ApplicationUser>().AddConfigurationStore(
-                    options =>
-                        {
-                            StartupExtension.ConfigureStoreOptions(this.Configuration, options);
-                        })
-
-                // this adds the operational data from DB (codes, tokens, consents)
-                .AddOperationalStore(
-                    options =>
-                        {
-                            StartupExtension.ConfigureOperationalOptions(this.Configuration, options);
-                            options.EnableTokenCleanup = true;
-                        });
-
-            if (this.Environment.IsDevelopment())
-            {
-                builder.AddDeveloperSigningCredential();
-            }
-            else
-            {
-                builder.AddDeveloperSigningCredential();
-
-                // throw new Exception("need to configure key material");
-            }
-
+            
+            services.AddIdentityServerSettings(this.Configuration, this.Environment);
+            
             services.AddAuthentication().AddGoogle(
                 options =>
                     {

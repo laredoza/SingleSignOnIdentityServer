@@ -16,11 +16,12 @@ namespace SingleSignOn.IdentityServerAspNetIdentity.Extensions
     using Microsoft.Extensions.DependencyInjection;
     using SingleSignOn.Data.Context;
     using Microsoft.Extensions.Configuration;
-    using IdentityServer4.EntityFramework.DbContexts;
     using Microsoft.Extensions.Options;
     using Swashbuckle.AspNetCore.SwaggerGen;
     using SingleSignOn.IdentityServerAspNetIdentity.Swagger;
     using IdentityServer4.EntityFramework.Options;
+    using SingleSignOn.IdentityServerAspNetIdentity.Models;
+    using Microsoft.AspNetCore.Hosting;
 
     #endregion
 
@@ -77,6 +78,42 @@ namespace SingleSignOn.IdentityServerAspNetIdentity.Extensions
                     });
         }
 
+        public static void AddIdentityServerSettings(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment)
+        {
+            var builder = services.AddIdentityServer(
+                    options =>
+                        {
+                            options.Events.RaiseErrorEvents = true;
+                            options.Events.RaiseInformationEvents = true;
+                            options.Events.RaiseFailureEvents = true;
+                            options.Events.RaiseSuccessEvents = true;
+                        })
+                .AddAspNetIdentity<ApplicationUser>().AddConfigurationStore(
+                    options =>
+                        {
+                            ConfigureStoreOptions(configuration, options);
+                        })
+
+                // this adds the operational data from DB (codes, tokens, consents)
+                .AddOperationalStore(
+                    options =>
+                        {
+                            ConfigureOperationalOptions(configuration, options);
+                            options.EnableTokenCleanup = true;
+                        });
+
+            if (environment.IsDevelopment())
+            {
+                builder.AddDeveloperSigningCredential();
+            }
+            else
+            {
+                builder.AddDeveloperSigningCredential();
+
+                // throw new Exception("need to configure key material");
+            }
+        }
+
         #endregion
 
         #region Other Methods
@@ -101,7 +138,7 @@ namespace SingleSignOn.IdentityServerAspNetIdentity.Extensions
             }
         }
 
-        public static void ConfigureStoreOptions(IConfiguration configuration, ConfigurationStoreOptions options)
+        private static void ConfigureStoreOptions(IConfiguration configuration, ConfigurationStoreOptions options)
         {
             var databaseType = (DatabaseType)Enum.Parse(typeof(DatabaseType), configuration.GetValue<string>("DatabaseType"));
 
@@ -122,7 +159,7 @@ namespace SingleSignOn.IdentityServerAspNetIdentity.Extensions
             }
         }
 
-        public static void ConfigureOperationalOptions(IConfiguration configuration, OperationalStoreOptions options)
+        private static void ConfigureOperationalOptions(IConfiguration configuration, OperationalStoreOptions options)
         {
             var databaseType = (DatabaseType)Enum.Parse(typeof(DatabaseType), configuration.GetValue<string>("DatabaseType"));
 
