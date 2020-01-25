@@ -29,10 +29,10 @@ Postgres is the default database selected.
 
 - Update DatabaseType to "Postgres" in appsettings.
 - Update the defaultConnection to "Host=localhost;Database=SingleSignOn;Username=postgres;Password=password1;" in  appsettings.json
-- Run Postgres Migration & Seeding in [SingleSignOnApi ( Api used to manage the Identity4 server )](https://github.com/laredoza/SingleSignOnApi)
+- Run Postgres Migration & Seeding in [SingleSignOnApi](https://github.com/laredoza/SingleSignOnApi)
 
 ### Microsoft Sql Server
 
 - Update DatabaseType to "MsSql" in appsettings.
 - Update the defaultConnection to "Data Source=.;Initial Catalog=SingleSignOn;User ID=sa;Password=yourStrong(!)Password;" in appsettings.json
-- Run Microsoft Sql Server Migration & Seeding in [SingleSignOnApi ( Api used to manage the Identity4 server )](https://github.com/laredoza/SingleSignOnApi)
+- Run Microsoft Sql Server Migration & Seeding in [SingleSignOnApi](https://github.com/laredoza/SingleSignOnApi)
