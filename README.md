@@ -20,3 +20,19 @@ This service can be managed using [SingleSignOnApiUI](https://github.com/laredoz
 ### Requirements 
 - [SingleSignOnApiUI ( Angular admin front end )](https://github.com/laredoza/SingleSignOnUI)
 - [SingleSignOnApi ( Api used to manage the Identity4 server )](https://github.com/laredoza/SingleSignOnApi) 
+
+## Database Configuration
+
+### Postgres
+
+Postgres is the default database selected.
+
+- Update DatabaseType to "Postgres" in appsettings.
+- Update the defaultConnection to "Host=localhost;Database=SingleSignOn;Username=postgres;Password=password1;" in  appsettings.json
+- Run Postgres Migration & Seeding in [SingleSignOnApi](https://github.com/laredoza/SingleSignOnApi)
+
+### Microsoft Sql Server
+
+- Update DatabaseType to "MsSql" in appsettings.
+- Update the defaultConnection to "Data Source=.;Initial Catalog=SingleSignOn;User ID=sa;Password=yourStrong(!)Password;" in appsettings.json
+- Run Microsoft Sql Server Migration & Seeding in [SingleSignOnApi](https://github.com/laredoza/SingleSignOnApi)
