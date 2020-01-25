@@ -23,9 +23,11 @@ namespace SingleSignOn.IdentityServerAspNetIdentity
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
     using SingleSignOn.Data.Context;
+    using SingleSignOn.IdentityServerAspNetIdentity.Extensions;
     using SingleSignOn.IdentityServerAspNetIdentity.Models;
     using SingleSignOn.IdentityServerAspNetIdentity.Swagger;
     using Swashbuckle.AspNetCore.SwaggerGen;
+    using SingleSignOn.IdentityServerAspNetIdentity.Extensions;
 
     #endregion
 
@@ -152,49 +154,16 @@ namespace SingleSignOn.IdentityServerAspNetIdentity
         /// </param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(
-                options =>
-
-                    // options.UseSqlite(Configuration.GetConnectionString("SqlLite")));
-                    // options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-                    options.UseNpgsql(this.Configuration.GetConnectionString("DefaultConnection")));
+            services.AddApplicationContext(this.Configuration);
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // EntityFramework
-            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-
             // services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
             services.AddMvc(options => options.EnableEndpointRouting = true)
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
-            services.AddApiVersioning(
-                options =>
-                    {
-                        // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
-                        options.ReportApiVersions = true;
-                    });
-            services.AddVersionedApiExplorer(
-                options =>
-                    {
-                        // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
-                        // note: the specified format code will format the version as "'v'major[.minor][-status]"
-                        options.GroupNameFormat = "'v'VVV";
 
-                        // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
-                        // can also be used to control the format of the API version in route templates
-                        options.SubstituteApiVersionInUrl = true;
-                    });
-            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            services.AddSwaggerGen(
-                options =>
-                    {
-                        // add a custom operation filter which sets default values
-                        options.OperationFilter<SwaggerDefaultValues>();
-
-                        // integrate xml comments
-                        // options.IncludeXmlComments( XmlCommentsFilePath );
-                    });
+            services.AddApiVersioningAndSwagger();
 
             services.Configure<IISOptions>(
                 iis =>
@@ -211,33 +180,17 @@ namespace SingleSignOn.IdentityServerAspNetIdentity
                             options.Events.RaiseFailureEvents = true;
                             options.Events.RaiseSuccessEvents = true;
                         })
-
-                // .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                // .AddInMemoryApiResources(Config.GetApis())
-                // .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<ApplicationUser>().AddConfigurationStore(
                     options =>
                         {
-                            options.ConfigureDbContext = b =>
-
-                                // b.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                                b.UseNpgsql(
-                                    this.Configuration.GetConnectionString("DefaultConnection"),
-                                    sql => sql.MigrationsAssembly(migrationsAssembly));
+                            StartupExtension.ConfigureStoreOptions(this.Configuration, options);
                         })
 
                 // this adds the operational data from DB (codes, tokens, consents)
                 .AddOperationalStore(
                     options =>
                         {
-                            options.ConfigureDbContext = b =>
-
-                                // b.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                                b.UseNpgsql(
-                                    this.Configuration.GetConnectionString("DefaultConnection"),
-                                    sql => sql.MigrationsAssembly(migrationsAssembly));
-
-                            // this enables automatic token cleanup. this is optional.
+                            StartupExtension.ConfigureOperationalOptions(this.Configuration, options);
                             options.EnableTokenCleanup = true;
                         });
 
