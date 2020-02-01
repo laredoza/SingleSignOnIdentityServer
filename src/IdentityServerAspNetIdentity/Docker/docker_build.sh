@@ -1,1 +1,0 @@
-docker build --rm -t single-sign-on . -f src/Dockerfile.SingleSignOn
