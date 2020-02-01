@@ -28,8 +28,4 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Data\SingleSignOn.Data.csproj" />
-    <!-- <ProjectReference Include="..\Infrastructure\SingleSignOn.Infrastructure.csproj" /> -->
-  </ItemGroup>
 </Project>
