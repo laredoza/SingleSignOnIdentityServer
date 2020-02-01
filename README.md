@@ -50,8 +50,7 @@ docker run \
 	-p 5001:80 \
 	-e "ConnectionStrings__DefaultConnection"="Host=localhost;Database=SingleSignOn;Username=postgres;Password=password1;" \
 	-e "DatabaseType"="Postgres" \
-	laredoza/single-sign-on:latest \
-	--restart unless-stopped
+	laredoza/single-sign-on:latest
 ```
 
 ### SqlExpress
@@ -65,6 +64,5 @@ docker run \
 	-p 5001:80 \
 	-e "ConnectionStrings__DefaultConnection"="Data Source=.;Initial Catalog=SingleSignOn;User ID=sa;Password=yourStrong(!)Password;" \
 	-e "DatabaseType"="MsSql" \
-	laredoza/single-sign-on:latest \
-	--restart unless-stopped
+	laredoza/single-sign-on:latest
 ```

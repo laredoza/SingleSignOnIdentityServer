@@ -7,4 +7,3 @@ docker run \
 	-e "ConnectionStrings__DefaultConnection"="Host=localhost;Database=SingleSignOn;Username=postgres;Password=password1;" \
 	-e "DatabaseType"="Postgres" \
 	laredoza/single-sign-on:latest \
-	--restart unless-stopped
