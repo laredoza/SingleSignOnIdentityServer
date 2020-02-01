@@ -36,3 +36,35 @@ Postgres is the default database selected.
 - Update DatabaseType to "MsSql" in appsettings.
 - Update the defaultConnection to "Data Source=.;Initial Catalog=SingleSignOn;User ID=sa;Password=yourStrong(!)Password;" in appsettings.json
 - Run Microsoft Sql Server Migration & Seeding in [SingleSignOnApi](https://github.com/laredoza/SingleSignOnApi)
+
+## Docker
+
+### Postgres
+
+```
+docker stop single-sign-on 
+docker rm single-sign-on  
+docker run \
+	--name=single-sign-on \
+	-d --restart unless-stopped \
+	-p 5001:80 \
+	-e "ConnectionStrings__DefaultConnection"="Host=localhost;Database=SingleSignOn;Username=postgres;Password=password1;" \
+	-e "DatabaseType"="Postgres" \
+	laredoza/single-sign-on:latest \
+	--restart unless-stopped
+```
+
+### SqlExpress
+
+```
+docker stop single-sign-on 
+docker rm single-sign-on  
+docker run \
+	--name=single-sign-on \
+	-d --restart unless-stopped \
+	-p 5001:80 \
+	-e "ConnectionStrings__DefaultConnection"="Data Source=.;Initial Catalog=SingleSignOn;User ID=sa;Password=yourStrong(!)Password;" \
+	-e "DatabaseType"="MsSql" \
+	laredoza/single-sign-on:latest \
+	--restart unless-stopped
+```
