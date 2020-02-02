@@ -44,7 +44,7 @@ Postgres is the default database selected.
 - Run Microsoft Sql Server Migration & Seeding in [SingleSignOnApi](https://github.com/laredoza/SingleSignOnApi)
 
 ## Docker
-Replace the < ip > with the actual database path. i.e) 172.17.0.3. Localhost will not work in containers
+Replace the < ip > in the connectionsting with the actual database path. i.e) 172.17.0.3. Localhost will not work in containers
 
 ### Postgres
 
