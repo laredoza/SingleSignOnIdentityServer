@@ -44,6 +44,7 @@ Postgres is the default database selected.
 - Run Microsoft Sql Server Migration & Seeding in [SingleSignOnApi](https://github.com/laredoza/SingleSignOnApi)
 
 ## Docker
+Replace the < ip > with the actual database path. i.e) 172.17.0.3. Localhost will not work in containers
 
 ### Postgres
 
@@ -54,7 +55,7 @@ docker run \
 	--name=single-sign-on \
 	-d --restart unless-stopped \
 	-p 5000:80 \
-	-e "ConnectionStrings__DefaultConnection"="Host=localhost;Database=SingleSignOn;Username=postgres;Password=password1;" \
+	-e "ConnectionStrings__DefaultConnection"="Host=<ip>;Database=SingleSignOn;Username=postgres;Password=password1;" \
 	-e "DatabaseType"="Postgres" \
 	laredoza/single-sign-on:latest
 ```
@@ -68,7 +69,7 @@ docker run \
 	--name=single-sign-on \
 	-d --restart unless-stopped \
 	-p 5000:80 \
-	-e "ConnectionStrings__DefaultConnection"="Data Source=.;Initial Catalog=SingleSignOn;User ID=sa;Password=yourStrong(!)Password;" \
+	-e "ConnectionStrings__DefaultConnection"="Data Source=<ip>;Initial Catalog=SingleSignOn;User ID=sa;Password=yourStrong(!)Password;" \
 	-e "DatabaseType"="MsSql" \
 	laredoza/single-sign-on:latest
 ```
@@ -82,7 +83,7 @@ docker run \
 	--name=single-sign-on \
 	-d --restart unless-stopped \
 	-p 5000:80 \
-	-e "ConnectionStrings__DefaultConnection"="Server=localhost;Database=SingleSignOn;User=root;Password=Password1" \
+	-e "ConnectionStrings__DefaultConnection"="Server=<ip>;Database=SingleSignOn;User=root;Password=Password1" \
 	-e "DatabaseType"="MySql" \
 	laredoza/single-sign-on:latest
 ```
