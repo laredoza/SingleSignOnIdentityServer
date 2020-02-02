@@ -18,8 +18,8 @@ This service can be managed using [SingleSignOnApiUI](https://github.com/laredoz
 ![Preview](https://raw.githubusercontent.com/laredoza/SingleSignOnUI/master/SingleSignOn.gif)
 
 ### Requirements 
-- [SingleSignOnApiUI ( Angular admin front end )](https://github.com/laredoza/SingleSignOnUI)
-- [SingleSignOnApi ( Api used to manage the Identity4 server )](https://github.com/laredoza/SingleSignOnApi) 
+- [Single Sign-on UI ( Angular admin front end )](https://github.com/laredoza/SingleSignOnUI)
+- [Single Sign-on Api ( Api used to manage the Single Sign-on Identity Server )](https://github.com/laredoza/SingleSignOnApi) 
 
 ## Database Configuration
 
